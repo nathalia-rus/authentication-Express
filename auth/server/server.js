@@ -36,6 +36,14 @@ passport.serializeUser((user, done) => {
   done(null, user.id);
 });
 
+passport.deserializeUser((id, done) => {
+  console.log('Inside deserializeUser callback')
+  console.log(`The user id passport saved in the session file store is: ${id}`)
+  const user = users[0].id === id ? users[0] : false;
+  done(null, user);
+});
+
+
 
 // create the server :
 
@@ -112,11 +120,10 @@ app.get('/authrequired', (req, res) => {
   }
 })
 
-
-
 // tell the server what port to listen on :
 
 app.listen(3000, () => {
   console.log('Listening in localhost: 3000')
 })
+
 
