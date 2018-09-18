@@ -19,6 +19,9 @@ passport.use(new LocalStrategy(
         if (!user) {
           return done(null, false, { message: 'Invalid credentials.\n' });
         }
+        if (password != user.password) {
+          return done(null, false, { message: 'Invalid credentials.\n' });
+        }
         if (!bcrypt.compareSync(password, user.password)) {
           return done(null, false, { message: 'Invalid credentials.\n' });
         }

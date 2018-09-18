@@ -109,6 +109,16 @@ This method takes 2 parameters. Our ‘login strategy’ which is ‘local’ in
 - The req.login(user, callback()) method takes in the user object we just returned from our local strategy and calls passport.serializeUser(callback()). It takes that user object and 1) saves the user id to the session file store 2) saves the user id in the request object as request.session.passport and 3) adds the user object to the request object as request.user. Now, on subsequent requests to authorized routes, we can retrieve the user object without requiring the user to login again (by getting the id from the session file store and using that to get the user object from the database and adding it to our request object).
 
 
+# NOTES ON PASSWORD ENCRYPTION 
 
+// server $ npm install bcrypt-nodejs --save
+ call it in LocalStrategy configuration, where we match the credentials the user sends with the credentials saved on the backend.
+ First, pass in the password  received from the user -which should be plaintext, and the 2nd argument is the hashed password stored in the database :) 
+ // ensure the hashed passwords are ok stored in the database
+ // quick online tool to generate a hash password : https://www.browserling.com/tools/bcrypt
+
+---------------------------------------------------------------
+--> for another time: signup flow.  
+--> check to make sure there isn’t a user with that email address already in the database, if there isn’t, can use axios.post() to store data in the db.json (make sure to hash the password with bcrypt), then call req.login() with the user object you’ve created.
 
 
