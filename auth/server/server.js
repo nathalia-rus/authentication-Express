@@ -3,11 +3,20 @@ const express = require('express');
 const uuid = require('uuid/v4');
 const session = require('express-session');
 const FileStore = require('session-file-store')(session);
+const bodyParser = require('body-parser');
 
-// create the server 
+// create the server :
+
 const app = express();
 
-// add and configure middleware 
+// add and configure middleware :
+
+
+app.use(bodyParser.urlencoded({ extended: false }))
+// added this because if I add an actual frontend to the app, 
+// the data in the POST request Content-Type would come through as a ‘application/x-www-form-urlencoded’
+
+app.use(bodyParser.json())
 app.use(session({
   genid: (req) => {
     console.log('inside the session middleware')
@@ -20,17 +29,37 @@ app.use(session({
   saveUninitialized: true
 }))
 
-//  creates the homepage route at '/'
+//  creates the homepage route at '/' :
+
 app.get('/', (req, res) => {
   console.log("Inside the homepage callback function")
   console.log(req.sessionID)
   res.send(`you just hit the home page yay!`)
 })
 
-// tell the server what port to listen on
+// create the login get and post routes 
+// in the post method, 
+//  calling ‘req.body’: 
+// this should log the data that  sent to the server in the POST request.
+app.get('/login', (req, res) => {
+  console.log('Inside the homepage callback function')
+  console.log(req.sessionID)
+  res.send(`You got the login page!\n`)
+})
+
+app.post('/login', (req, res) => {
+  console.log("Inside POST / login callback function")
+  console.log(req.body)
+  res.send('you posted to the login page!\n')
+})
+
+
+// tell the server what port to listen on :
+
 app.listen(3000, ()=> {
   console.log('Listening in localhost: 3000')
 })
+
 
 // NOTES
 
@@ -86,3 +115,11 @@ app.listen(3000, ()=> {
 // and I run the server again, and it saved indeed the session on the server side! 
 // getting the same session id output by server every time :))
 
+// l. 41
+// cd auth cd client
+// curl -X POST http://localhost:3000/login -b cookie-file.txt -H 'Content-Type: application/json' -d '{"email":"test@test.com", "password":"password"}'
+//  -X POST instead of -X GET,  -H flag to set the header content-type to application/json, -d flag in along with the data that I want to send
+// but server log: req.body is ‘undefined’.
+// Express doesn’t actually know how to read the JSON content-type, 
+// so need to add another middleware to do this. 
+// --> body-parser middleware to body parse the data and add it to the req.body property.
