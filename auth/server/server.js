@@ -31,7 +31,20 @@ app.listen(3000, ()=> {
 })
 
 
-  // in the session configuration below, 
+// NOTES
+
+// l. 16:
+  // in the session configuration above, 
   // leaving the ‘secret’ as ‘keyboard cat’, 
   // but in production this would be replaced with a randomly 
   // generated string that’s pulled from an environment variable
+
+
+// If I restart the server again, the memory will be wiped again:
+//  need to have some way of making sure that I can save  
+// session id even if the server shuts down.
+// ---> ‘session store’ comes in there:
+// Normally,  database would act as a session store, 
+// but let's keep things as simple as possible
+// let’s just store our session info in text files.
+
