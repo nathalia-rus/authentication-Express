@@ -79,10 +79,21 @@ https://stackoverflow.com/questions/27637609/understanding-passport-serialize-de
 // how cookies and sessions work:
 https://stackoverflow.com/questions/11142882/how-do-cookies-and-sessions-work
 
+# DB NOTES
+
+// in db / package.json / script added :  "json:server": "json-server --watch ./db.json --port 5000"
+// json-server is a package that automatically sets up RESTful routes for data in the db.json file.
+
+# AXIOS NOTES
+
+// run with json:server cf script added, then other terminal window and --> npm install axios --save
+--> In our LocalStrategy configuration, we’re now going to fetch our user object from the /users REST endpoint using the email address as a query parameter (like before, but was manually done)
+While we’re at it, let’s also update our configuration to handle invalid user credentials or any errors that are returned by axios from the json-server.
+--> passport.deserializeUser() function: let’s return the user object by calling axios to retrieve the /users endpoint and passing in the user id in the path (i.e. /users/:id).
+-->  + handle the various errors that could pop up during authentication in our passport.authenticate() callback function, and instead of simple telling the user that they have logged in, let’s redirect the user to the /authrequired path.
 
 
-
---> NOTES ON AUTHENTICATION FLOW (onto passport.js) :
+--> NOTES ON AUTHENTICATION FLOW ( for passport.js) :
 
 - The user is going to POST their login information to the /login route
 
